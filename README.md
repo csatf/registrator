@@ -1,3 +1,23 @@
+This modified version adds support for the skydns2 backend over SSL. Thanks https://github.com/rudolfrandal.
+
+Docker Hub: https://hub.docker.com/r/csatf/registrator/
+
+Example usage:
+```
+docker run \
+    --restart=always \
+    --name registrator \
+    --net=host \
+    --volume=/var/run/docker.sock:/tmp/docker.sock \
+    --volume=/home/core/ssl:/certs \
+    -e ETCD_TLSPEM=/certs/core-os.pem \
+    -e ETCD_TLSKEY=/certs/core-os-key.pem \
+    -e ETCD_CACERT=/certs/ca.pem \
+    csatf/registrator:latest \
+    -ip ${COREOS_PRIVATE_IPV4} \
+    skydns2://127.0.0.1:2379/local/app
+```
+
 # Registrator
 
 Service registry bridge for Docker, sponsored by [Weave](http://weave.works).
